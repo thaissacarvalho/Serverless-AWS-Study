@@ -26,3 +26,10 @@ No projeto será criado um Ecommerce contendo:
 - Auditoria
 
 
+-> COMANDOS
+
+- cdk bootstrap = Utilizado uma unica vez por conta/região
+- cdk list - Lista todas as STACK do projeto
+- cdk deploy --all - Instalação de todas as stacks que possui no projeto
+
+URL test -> https://qiqhyy4pui.execute-api.us-east-1.amazonaws.com/prod/
