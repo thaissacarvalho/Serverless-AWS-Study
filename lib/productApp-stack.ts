@@ -3,8 +3,7 @@ import * as lambdaNodeJS from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 
-export class ProductAppStack extends cdk.Stack {
-
+export class ProductsAppStack extends cdk.Stack {
   readonly productFetchHandler: lambdaNodeJS.NodejsFunction;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -21,9 +20,6 @@ export class ProductAppStack extends cdk.Stack {
         bundling: {
           minify: true,
           sourceMap: false
-        },
-        environment: {
-          PRODUCTS_DDB: this.productsDdb.tableName, 
         },
       });
   };
