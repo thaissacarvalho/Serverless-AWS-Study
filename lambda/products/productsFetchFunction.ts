@@ -7,7 +7,7 @@ export async function handler(event: APIGatewayProxyEvent, context: Context): Pr
   const method = event.httpMethod;
 
   console.log(`AWS LAMBDA: ${lambdaRequestId} - API GATEWAY: ${apiRequestId}`);
-  
+
   if (event.resource === "/products") {
     if (method === 'GET') {
       console.log('GET');
@@ -18,6 +18,17 @@ export async function handler(event: APIGatewayProxyEvent, context: Context): Pr
           message: 'GET Products  - OK',
         })
       }
+    }
+  } else if (event.resource === "/products/{id}") {
+    
+    const productId = event.pathParameters!.id as string;
+
+    console.log(`GET /products/${productId}`);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: `GET /products/${productId}`,
+      })
     }
   }
 
