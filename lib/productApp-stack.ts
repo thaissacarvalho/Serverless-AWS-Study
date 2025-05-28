@@ -35,6 +35,11 @@ export class ProductsAppStack extends cdk.Stack {
           minify: true,
           sourceMap: false
         },
+        environment: {
+          PROCUTS_DDB: this.productDdb.tableName
+        }
       });
+    
+    this.productDdb.grantReadData(this.productFetchHandler);
   };
 }
