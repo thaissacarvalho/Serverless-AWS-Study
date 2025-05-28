@@ -6,6 +6,7 @@ import { Construct } from "constructs";
 
 export class ProductsAppStack extends cdk.Stack {
   readonly productFetchHandler: lambdaNodeJS.NodejsFunction;
+  readonly productAdminHandler: lambdaNodeJS.NodejsFunction;
   readonly productDdb: dynamodb.Table;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -23,11 +24,11 @@ export class ProductsAppStack extends cdk.Stack {
       writeCapacity: 1,
     });
 
-    this.productFetchHandler = new lambdaNodeJS.NodejsFunction(this, "ProductsFetchFunction", 
-      { 
+    this.productFetchHandler = new lambdaNodeJS.NodejsFunction(this, "ProductsFetchFunction",
+      {
         runtime: lambda.Runtime.NODEJS_LATEST,
-        functionName: "ProductsFetchFunction", 
-        entry: "lambda/products/productsFetchFunction.ts", 
+        functionName: "ProductsFetchFunction",
+        entry: "lambda/products/productsFetchFunction.ts",
         handler: "handler",
         memorySize: 512,
         timeout: cdk.Duration.seconds(10),
@@ -39,7 +40,26 @@ export class ProductsAppStack extends cdk.Stack {
           PROCUTS_DDB: this.productDdb.tableName
         }
       });
-    
-    this.productDdb.grantReadData(this.productFetchHandler);
+
+    this.productDdb.grantReadData(this.productFetchHandler); // Somente ler a informação do handler
+
+    this.productAdminHandler = new lambdaNodeJS.NodejsFunction(this, "ProductsAdminFunction",
+      {
+        runtime: lambda.Runtime.NODEJS_LATEST,
+        functionName: "ProductsAdminFunction",
+        entry: "lambda/products/productsAdminFunction.ts",
+        handler: "handler",
+        memorySize: 512,
+        timeout: cdk.Duration.seconds(10),
+        bundling: {
+          minify: true,
+          sourceMap: false
+        },
+        environment: {
+          PROCUTS_DDB: this.productDdb.tableName
+        }
+      });
+
+    this.productDdb.grantWriteData(this.productAdminHandler); // Somente escrever a informação do handler
   };
 }
