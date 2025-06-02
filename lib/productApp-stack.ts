@@ -42,7 +42,7 @@ export class ProductsAppStack extends cdk.Stack {
           sourceMap: false
         },
         environment: {
-          PROCUTS_DDB: this.productDdb.tableName
+          PRODUCTS_DDB: this.productDdb.tableName
         },
         layers: [productsLayer]
       });
@@ -62,7 +62,7 @@ export class ProductsAppStack extends cdk.Stack {
           sourceMap: false
         },
         environment: {
-          PROCUTS_DDB: this.productDdb.tableName
+          PRODUCTS_DDB: this.productDdb.tableName
         },
         layers: [productsLayer]
       });
