@@ -8,7 +8,6 @@ const ddbClient = new DynamoDB.DocumentClient();
 const productRepository = new ProductRepository(ddbClient, productsDbd);
 
 export async function handler(event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> {
-
   const lambdaRequestId = context.awsRequestId; // Gerado no AWS Lambda a cada execução da Lambda. Você encontra o ID no CloudWatch.
   const apiRequestId = event.requestContext.requestId; // Esse é chamado da API Gateway, ele é um ID ÚNICO/EXCLUSIVO e ajuda a rastrear cada requisição HTTP.
   const method = event.httpMethod;
@@ -16,7 +15,7 @@ export async function handler(event: APIGatewayProxyEvent, context: Context): Pr
   console.log(`AWS LAMBDA: ${lambdaRequestId} - API GATEWAY: ${apiRequestId}`);
   console.log("EVENT: ", JSON.stringify(event, null, 2));
 
-  if (event.path === '/products') {
+  if (event.resource === '/products') {
     console.log("POST - /products");
 
     const product = JSON.parse(event.body!) as Product;
@@ -29,7 +28,7 @@ export async function handler(event: APIGatewayProxyEvent, context: Context): Pr
       },
       body: JSON.stringify(productCreated)
     }
-  } else if (event.path === "/products/{id}") {
+  } else if (event.resource === "/products/{id}") {
     const productId = event.pathParameters!.id as string;
 
     if (method === "PUT") {
